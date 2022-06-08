@@ -1,0 +1,1 @@
+export const startDir = `${process.env.HOMEDRIVE}${process.env.HOMEPATH}`;
