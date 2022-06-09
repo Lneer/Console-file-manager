@@ -9,5 +9,4 @@ if (path.isAbsolute(dir)){
     let parsedPath =  dir.split(sep);
     return (path.join(currDir, ...parsedPath))
 }
-
 }
