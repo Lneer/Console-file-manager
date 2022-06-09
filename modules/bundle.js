@@ -11,5 +11,7 @@ import {rm} from './rm.js';
 import {mv} from './mv.js';
 import {os} from './os.js';
 import {hash} from './hash.js';
+import {compress} from './compress.js';
+import {decompress} from './decompress.js';
 
-export {variable,createInterface,up,cd,li,cat,add,rn,cp,mv,rm,os,hash};
+export {variable,createInterface,up,cd,li,cat,add,rn,cp,mv,rm,os,hash,compress,decompress};

@@ -61,5 +61,13 @@ readLine.on('line', (userCommand) =>{
             Mylib.hash(...args)
             .then(()=> process.stdout.write(currentDir +'>'))
             break;
+        case 'compress':
+            Mylib.compress(...args)
+            .then(()=> process.stdout.write(currentDir +'>'))
+            break;
+        case 'decompress':
+            Mylib.decompress(...args)
+            .then(()=> process.stdout.write(currentDir +'>'))
+            break;
     }
 })
