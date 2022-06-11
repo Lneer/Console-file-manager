@@ -1,16 +1,25 @@
 import  {createReadStream} from 'fs';
-import * as path from 'path';
+import {PathParser} from './lib/lib.js';
+import {faledOperation,invalidInput} from './lib/variable.js'
 export const  cat = async(pathToFile) => {
-	let fileContent
-	if (path.isAbsolute(pathToFile)){
-		 fileContent = createReadStream(pathToFile, 'utf-8');
-	} else{
-		const currentDir = process.argv[1]; 
-		pathToFile = path.join(currentDir, pathToFile)
-		fileContent = createReadStream(pathToFile, 'utf-8');
-	}
-    for await(const chunk of fileContent) {
-		process.stdout.write(chunk)
-	}
-	process.stdout.write('\n')
+    try {
+        if(!pathToFile) {
+            throw invalidInput;
+        }
+        pathToFile = PathParser(pathToFile);
+        let fileContent = createReadStream(pathToFile);
+
+        for await(const chunk of fileContent) {
+            process.stdout.write(chunk);
+        }
+
+        process.stdout.write('\n');
+
+    } catch (error) {
+        if (error === invalidInput){
+            console.log(invalidInput.message);
+        }
+        else {console.log(faledOperation.message)}
+    } 
+
 }

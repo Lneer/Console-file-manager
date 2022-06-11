@@ -1,18 +1,20 @@
 import {open} from 'fs/promises'
-import * as path from 'path'
-import {faledOperation} from './variable.js'
+import {join}  from 'path'
+import {faledOperation,invalidInput} from './lib/variable.js'
 
 export const add = async(fileName) => {
-    const currentDir = process.argv[1];
-    const filePath = path.join(currentDir,fileName);
     try {
+        if(!fileName) {
+            throw invalidInput;
+        }
+        const filePath = join(process.cwd(),fileName);
         await open(filePath, 'wx');
     } 
     catch (error) {
-        if(error.code === 'EEXIST'){
-            console.error(faledOperation)
+        if (error === invalidInput){
+            console.log(invalidInput.message);
         }
-        
+        else {console.log(faledOperation.message)}
     }
     
 }

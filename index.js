@@ -1,73 +1,95 @@
 
 import * as Mylib  from './modules/bundle.js';
+import {Consolwrite,ArgsJoiner } from './modules/lib/lib.js'
+import{init} from './modules/lib/init.js'
+import{exit} from './modules/lib/exit.js'
+import{invalidInput} from './modules/lib/variable.js'
 
 const readLine = Mylib.createInterface({
     input: process.stdin,
     output: process.stdout
 })
 let currentDir = Mylib.variable.startDir
-process.argv[1] = currentDir;
-process.stdout.write(currentDir +'>');
+process.chdir(currentDir);
+init()
+Consolwrite();
 readLine.on('line', (userCommand) =>{
     let parsedCommand = userCommand.split(' ')
-    let instruction = parsedCommand[0];
-    parsedCommand.shift();
+    let instruction = parsedCommand.shift();
     let args = parsedCommand;
+
     switch (instruction.toLowerCase()) {
         case '..':
         case 'up': 
-            currentDir = Mylib.up(currentDir);
-            process.argv[1] = currentDir;
-            process.stdout.write(currentDir +'>');
+            Mylib.up();
+            Consolwrite();
             break;
         case 'cd':
-            currentDir =  Mylib.cd(currentDir,args);
-            process.argv[1] = currentDir;
-            process.stdout.write(currentDir +'>');
+            args = ArgsJoiner(args);
+            Mylib.cd(args)
+            .then(()=> Consolwrite());
             break;
-        case 'li':
-            Mylib.li(currentDir)
-            .then(()=> process.stdout.write(currentDir +'>'))
+        case 'ls':
+            Mylib.ls(process.cwd())
+            .then(()=> Consolwrite())
             break;
         case 'cat':
-            Mylib.cat(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            args = ArgsJoiner(args);
+            Mylib.cat(args)
+            .then(()=> Consolwrite())
             break;
         case 'add':
-            Mylib.add(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            args = ArgsJoiner(args);
+            Mylib.add(args)
+            .then(()=> Consolwrite())
             break;
         case 'rn':
-            Mylib.rn(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            Mylib.rn(args)
+            .then(()=> Consolwrite())
             break;
         case 'cp':
-            Mylib.cp(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            Mylib.cp(args)
+            .then(()=> Consolwrite())
             break;
         case 'mv':
-            Mylib.mv(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            Mylib.mv(args)
+            .then(()=> Consolwrite())
             break;
         case 'rm':
-            Mylib.rm(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            Mylib.rm(args)
+            .then(()=> Consolwrite())
             break;
         case 'os':
             Mylib.os(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            .then(()=> Consolwrite())
             break;
         case 'hash':
-            Mylib.hash(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            Mylib.hash(args)
+            .then(()=> Consolwrite())
             break;
         case 'compress':
-            Mylib.compress(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            Mylib.compress(args)
+            .then(()=> Consolwrite())
             break;
         case 'decompress':
-            Mylib.decompress(...args)
-            .then(()=> process.stdout.write(currentDir +'>'))
+            Mylib.decompress(args)
+            .then(()=> Consolwrite())
             break;
+        case '.exit':
+            exit();
+
+        default : 
+        try {
+            throw invalidInput
+        } catch (error) {
+            console.log(invalidInput.message)
+        }
+        finally {Consolwrite()}
     }
 })
+
+readLine.on('SIGINT',() =>{
+    console.log();
+    exit();
+})
+

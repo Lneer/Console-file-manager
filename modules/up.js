@@ -1,5 +1,6 @@
 import {join} from 'path';
-export const up =(currentPath)=> {
+export const up =()=> {
+    let currentPath = process.cwd();
     currentPath = join(currentPath,'../')
-    return currentPath
+    process.chdir(currentPath)
 } 

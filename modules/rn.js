@@ -1,26 +1,27 @@
 import {rename} from 'fs/promises'
-import * as path from 'path'
-import {faledOperation} from './variable.js'
+import {join,parse} from 'path'
+import {faledOperation,invalidInput} from './lib/variable.js'
+import {PathParser, ArgsParser} from './lib/lib.js';
 
-export const rn = async(pathToSourceFile, newFilename) => {
-    const currentDir = process.argv[1];
-    let pathToNewFile = newFilename;
-
-    if (!path.isAbsolute(pathToSourceFile)){
-        pathToSourceFile = path.join(currentDir,pathToSourceFile);
-        pathToNewFile = path.join(currentDir,newFilename);  
-    } else {
-        let parsedPath = path.parse(pathToSourceFile)
-        pathToNewFile = path.join(parsedPath.dir, newFilename); 
-    }
-    
+export const rn = async(args) => {
+    let pathToSourceFile, newFilename; 
+    args = ArgsParser(args);
     try {
+        if (args.length !== 2) {
+            throw invalidInput;
+        } 
+        [pathToSourceFile,newFilename] = args; 
+        pathToSourceFile = PathParser(pathToSourceFile);
+        const  parsedPath = parse(pathToSourceFile)
+        const pathToNewFile = join(parsedPath.dir, newFilename); 
+    
         await rename(pathToSourceFile,pathToNewFile);
     } 
     catch (error) {
-        if(error){
-            console.error(faledOperation)
+        if (error === invalidInput){
+            console.log(invalidInput.message);
         }
+        else {console.log(faledOperation.message)}
     }
     
 }

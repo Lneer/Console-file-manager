@@ -1,7 +1,15 @@
 import * as path from 'path'
 let a = process.argv
-a[1] = `${process.env.HOMEDRIVE}${process.env.HOMEPATH}`
-let b = '..\\1.txt'
-let parsedB = path.parse(b);
-console.log(parsedB);
+let b = `${process.env.HOMEDRIVE}${process.env.HOMEPATH}`
+
+//process.chdir(b)
+// let c = process.cwd()
+// console.log(a);
+// console.log(c);
+
+
+b = 'C:\\Users\\XE\\test\\2.txt'
+console.log(path.parse(b))
+
+
 

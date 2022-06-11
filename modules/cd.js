@@ -1,12 +1,18 @@
-import * as path from 'path';
-export const  cd = (currDir, dir) =>{
-const sep = path.sep; 
-
-if (path.isAbsolute(dir)){
-    //Check is so path?
-    return dir
-} else{
-    let parsedPath =  dir.split(sep);
-    return (path.join(currDir, ...parsedPath))
-}
+import {access} from 'fs/promises';
+import {PathParser} from './lib/lib.js';
+import {faledOperation, invalidInput} from './lib/variable.js'
+export const  cd = async(destinationPath) => {
+    try {
+        if(!destinationPath) {
+            throw invalidInput
+        }
+        destinationPath = PathParser(destinationPath)
+        await access(destinationPath);
+        process.chdir(destinationPath);
+    } catch (error) {
+        if (error === invalidInput){
+            console.log(invalidInput.message);
+        }
+        else {console.log(faledOperation.message);}
+    }
 }
