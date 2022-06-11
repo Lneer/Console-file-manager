@@ -14,6 +14,7 @@ export const  cat = async(pathToFile) => {
         }
 
         process.stdout.write('\n');
+        fileContent.close();
 
     } catch (error) {
         if (error === invalidInput){

@@ -8,7 +8,8 @@ export const add = async(fileName) => {
             throw invalidInput;
         }
         const filePath = join(process.cwd(),fileName);
-        await open(filePath, 'wx');
+        let newfile = await open(filePath, 'wx');
+        newfile.close();
     } 
     catch (error) {
         if (error === invalidInput){
