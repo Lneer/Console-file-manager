@@ -6,10 +6,16 @@ export const os = async(args) =>{
     try {
         switch (args){
             case '--EOL':
-                console.log(opSys.EOL);
+                console.log(JSON.stringify(opSys.EOL));
                 break;
             case '--cpus':
-                console.log(opSys.cpus());
+                let cpusinfo = opSys.cpus();
+                console.log("total CPUS: ",cpusinfo.length)
+                cpusinfo.forEach((elem)=>{
+                    console.log('model: ',elem.model);
+                    console.log('speed:' ,elem.speed);
+                })
+               
                 break;
             case '--homedir':
                 console.log(opSys.homedir());
