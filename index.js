@@ -10,7 +10,6 @@ const readLine = Mylib.createInterface({
     output: process.stdout
 })
 let currentDir = Mylib.variable.startDir
-console.log(currentDir)
 process.chdir(currentDir);
 init()
 Consolwrite();
